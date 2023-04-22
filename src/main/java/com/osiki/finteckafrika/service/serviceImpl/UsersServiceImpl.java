@@ -1,5 +1,6 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
+import com.osiki.finteckafrika.configuration.PasswordEncoder;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.service.UsersService;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsersServiceImpl implements UserDetailsService, UsersService {
 
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String registerUser(UserRegistrationRequestModel registrationRequestModel) throws JSONException {
