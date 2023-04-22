@@ -1,6 +1,7 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.exception.EmailNotValidException;
+import com.osiki.finteckafrika.model.MailServiceModel;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.service.RegistrationService;
@@ -39,7 +40,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public void sendMail(String name, String email, String link) {
 
+        String subject = "Email Verification";
+        String body = "Click the link to verify your profile \n" + link;
+        MailServiceModel mailServiceModel = new MailServiceModel(name, email, body, subject);
+        mailService.sendNotification(mailServiceModel);
+
     }
-
-
 }
