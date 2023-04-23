@@ -1,6 +1,7 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.configuration.PasswordEncoder;
+import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
@@ -29,6 +30,10 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
 
     @Override
     public String registerUser(UserRegistrationRequestModel registrationRequestModel) throws JSONException {
+        // create an object of User entity
+        Users user = new Users();
+        // create a boolean variable to check if user email exist in the database
+        boolean userExists = usersRepository.findByEmail(registrationRequestModel.getEmail()).isPresent();
         return null;
     }
 
