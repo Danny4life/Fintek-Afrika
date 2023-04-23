@@ -32,8 +32,15 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
     public String registerUser(UserRegistrationRequestModel registrationRequestModel) throws JSONException {
         // create an object of User entity
         Users user = new Users();
-        // create a boolean variable to check if user email exist in the database
+        // create a boolean variable user exists to find if user email is present in the database
         boolean userExists = usersRepository.findByEmail(registrationRequestModel.getEmail()).isPresent();
+        // create a boolean variable password match to check and confirm if password and confirm password match
+        boolean passwordMatch = util.validatePassword(registrationRequestModel.getPassword(),
+                registrationRequestModel.getConfirmPassword());
+
+        if(userExists){
+
+        }
         return null;
     }
 
