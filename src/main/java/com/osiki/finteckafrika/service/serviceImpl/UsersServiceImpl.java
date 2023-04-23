@@ -47,6 +47,12 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
         if(!passwordMatch){
             throw new InputMismatchException("Password do not match!");
         }
+
+       registrationRequestModel.setTransactionPin(passwordEncoder.
+               encode(registrationRequestModel.getTransactionPin()));
+
+        registrationRequestModel.setPassword(passwordEncoder
+                .encode(registrationRequestModel.getPassword()));
         return null;
     }
 
