@@ -2,6 +2,7 @@ package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.configuration.PasswordEncoder;
 import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.exception.EmailAlreadyTakenException;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.InputMismatchException;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +42,10 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
                 registrationRequestModel.getConfirmPassword());
 
         if(userExists){
-
+            throw new EmailAlreadyTakenException("Email already taken");
+        }
+        if(!passwordMatch){
+            throw new InputMismatchException("Password do not match!");
         }
         return null;
     }

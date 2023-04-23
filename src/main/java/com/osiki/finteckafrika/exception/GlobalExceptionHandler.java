@@ -21,4 +21,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyTakenException(final EmailAlreadyTakenException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Email already taken");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
