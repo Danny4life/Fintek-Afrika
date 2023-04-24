@@ -1,6 +1,5 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
-import com.osiki.finteckafrika.configuration.PasswordEncoder;
 import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.exception.EmailAlreadyTakenException;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
@@ -14,6 +13,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,10 +54,13 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
         registrationRequestModel.setPassword(passwordEncoder
                 .encode(registrationRequestModel.getPassword()));
         return null;
+
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
+
+
 }
