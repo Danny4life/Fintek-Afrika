@@ -1,12 +1,17 @@
 package com.osiki.finteckafrika.util;
 
+import com.osiki.finteckafrika.enums.DefaultMessage;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -32,6 +37,38 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey()
+        return Jwts.parser().setSigningKey(DefaultMessage.SECRET_KEY).parseClaimsJws(token).getBody();
+    }
+
+    public String generateToken(UserDetails userDetails){
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+
+        return Jwts.builder().setClaims(claims).setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(SignatureAlgorithm.HS256, DefaultMessage.SECRET_KEY).compact();
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails){
+        final String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    public String generatePasswordResetToken(String email){
+
+        Date currentDate = new Date();
+        Date expirationDate = new Date(currentDate.getTime() + 6000000);
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, DefaultMessage.SECRET_KEY)
+                .compact();
+
     }
 }
