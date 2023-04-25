@@ -32,4 +32,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(final UserNotFoundException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("User not found");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
