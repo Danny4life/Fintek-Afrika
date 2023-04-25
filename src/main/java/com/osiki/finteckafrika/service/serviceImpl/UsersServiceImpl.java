@@ -1,11 +1,15 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.entity.Wallet;
 import com.osiki.finteckafrika.exception.EmailAlreadyTakenException;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
+import com.osiki.finteckafrika.repository.WalletRepository;
+import com.osiki.finteckafrika.request.FlwWalletRequest;
 import com.osiki.finteckafrika.service.UsersService;
+import com.osiki.finteckafrika.service.WalletService;
 import com.osiki.finteckafrika.token.ConfirmationToken;
 import com.osiki.finteckafrika.util.Util;
 import lombok.AllArgsConstructor;
@@ -33,6 +37,9 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final ConfirmationTokenServiceImpl tokenService;
+
+    private final WalletService walletService;
+    private final WalletRepository walletRepository;
     private final Util util;
 
     @Override
@@ -73,6 +80,18 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
         );
 
         confirmationTokenRepository.save(confirmationToken);
+
+        Wallet wallet = walletService.createWallet(FlwWalletRequest.builder()
+                .firstname(user1.getFirstName())
+                .lastname(user1.getLastName())
+                .email(user1.getEmail())
+                .phoneNumber(user1.getPhoneNumber())
+                .bvn(user1.getBvn())
+                .build());
+        wallet.setUsers(user1);
+        wallet.setBalance(0.00);
+        walletRepository.save(wallet);
+
         return token;
 
     }

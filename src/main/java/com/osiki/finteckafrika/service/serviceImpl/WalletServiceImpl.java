@@ -6,9 +6,11 @@ import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.model.WalletModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
+import com.osiki.finteckafrika.request.FlwWalletRequest;
 import com.osiki.finteckafrika.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -34,5 +36,10 @@ public class WalletServiceImpl implements WalletService {
         walletModel.setAccountNumber(wallet.getAccountNumber());
         BeanUtils.copyProperties(users, walletModel);
         return walletModel;
+    }
+
+    @Override
+    public Wallet createWallet(FlwWalletRequest walletRequest) throws JSONException {
+        return null;
     }
 }
