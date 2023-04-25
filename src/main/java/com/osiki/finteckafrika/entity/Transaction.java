@@ -15,4 +15,5 @@ import javax.persistence.Table;
 @Table(name = "transaction_table")
 @Builder
 public class Transaction extends BaseClass{
+
 }

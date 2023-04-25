@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,9 +17,13 @@ import javax.persistence.Table;
 @Builder
 public class Wallet extends BaseClass {
     private Double balance = 0.00;
+    @Column(nullable = false)
     private String bankName;
+    @Column(length = 10, nullable = false)
+    @Size(min = 10, max = 10)
     private String accountNumber;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users users;
+
 }
