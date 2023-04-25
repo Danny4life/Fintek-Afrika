@@ -45,5 +45,8 @@ public class Users extends BaseClass {
     @Enumerated(EnumType.STRING)
     private UsersStatus usersStatus = UsersStatus.INACTIVE;
 
+    @OneToOne(mappedBy = "users")
+    private Wallet wallet;
+
     private String role = "USER";
 }
