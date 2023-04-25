@@ -6,9 +6,11 @@ import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.service.UsersService;
+import com.osiki.finteckafrika.token.ConfirmationToken;
 import com.osiki.finteckafrika.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -53,7 +57,23 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
 
         registrationRequestModel.setPassword(passwordEncoder
                 .encode(registrationRequestModel.getPassword()));
-        return null;
+
+        BeanUtils.copyProperties(registrationRequestModel, user);
+        Users user1 = usersRepository.save(user);
+
+
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(10),
+                user
+        );
+
+        confirmationTokenRepository.save(confirmationToken);
+        return token;
 
     }
 
