@@ -7,6 +7,7 @@ import com.osiki.finteckafrika.model.WalletModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
 import com.osiki.finteckafrika.request.FlwWalletRequest;
+import com.osiki.finteckafrika.response.FlwVirtualAccountResponse;
 import com.osiki.finteckafrika.service.WalletService;
 import com.osiki.finteckafrika.util.Constant;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -53,7 +55,21 @@ public class WalletServiceImpl implements WalletService {
         httpHeaders.add("Authorization", "Bearer" + Constant.AUTHORIZATION);
         FlwWalletRequest payload = generatePayload(walletRequest);
         HttpEntity<FlwWalletRequest> request = new HttpEntity<>(payload, httpHeaders);
-        return null;
+
+        FlwVirtualAccountResponse body = restTemplate.exchange(
+                Constant.CREATE_VIRTUAL_ACCOUNT_API,
+                HttpMethod.POST,
+                request,
+                FlwVirtualAccountResponse.class
+        ).getBody();
+
+        Wallet wallet = Wallet.builder()
+                .bankName(body.getData().getBankName())
+                .accountNumber(body.getData().getAccountNumber())
+                .balance(Double.parseDouble(body.getData().getAmount()))
+                .build();
+
+        return wallet;
     }
 
     private FlwWalletRequest generatePayload(FlwWalletRequest walletRequest) {
