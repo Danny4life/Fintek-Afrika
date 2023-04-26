@@ -11,9 +11,14 @@ import com.osiki.finteckafrika.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +45,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public Wallet createWallet(FlwWalletRequest walletRequest) throws JSONException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return null;
     }
 }
