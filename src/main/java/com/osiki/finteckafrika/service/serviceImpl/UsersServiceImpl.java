@@ -97,6 +97,11 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
     }
 
     @Override
+    public void enableUser(String email) {
+
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }

@@ -5,4 +5,6 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 
 public interface UsersService {
     String registerUser(UserRegistrationRequestModel registrationRequestModel) throws JSONException;
+
+    void enableUser(String email);
 }
