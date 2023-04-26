@@ -108,6 +108,18 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
     }
 
     @Override
+    public void saveToken(String token, Users users) {
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(10),
+                users
+        );
+
+        tokenService.saveConfirmationToken(confirmationToken);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
