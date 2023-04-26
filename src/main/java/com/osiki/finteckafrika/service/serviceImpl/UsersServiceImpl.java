@@ -18,6 +18,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +28,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -119,9 +123,18 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
         tokenService.saveConfirmationToken(confirmationToken);
     }
 
+    //getuser method here
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Users> users = usersRepository.findByEmail(email);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER");
+
+        if(users.isEmpty()){
+            throw new UserNotFoundException("Email or Password does not exists");
+        }else {
+            return new User(users.get().getEmail(), users.get().getPassword(), Collections.singleton(authority));
+        }
     }
 
 
