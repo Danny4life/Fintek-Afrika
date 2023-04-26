@@ -2,7 +2,9 @@ package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.entity.Wallet;
+import com.osiki.finteckafrika.enums.UsersStatus;
 import com.osiki.finteckafrika.exception.EmailAlreadyTakenException;
+import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
@@ -98,7 +100,11 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
 
     @Override
     public void enableUser(String email) {
+        Users users = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
 
+        users.setUsersStatus(UsersStatus.ACTIVE);
+        usersRepository.save(users);
     }
 
     @Override
