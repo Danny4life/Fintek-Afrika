@@ -8,9 +8,11 @@ import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
 import com.osiki.finteckafrika.request.FlwWalletRequest;
 import com.osiki.finteckafrika.service.WalletService;
+import com.osiki.finteckafrika.util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,6 +50,13 @@ public class WalletServiceImpl implements WalletService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.add("Authorization", "Bearer" + Constant.AUTHORIZATION);
+        FlwWalletRequest payload = generatePayload(walletRequest);
+        HttpEntity<FlwWalletRequest> request = new HttpEntity<>(payload, httpHeaders);
+        return null;
+    }
+
+    private FlwWalletRequest generatePayload(FlwWalletRequest walletRequest) {
         return null;
     }
 }
