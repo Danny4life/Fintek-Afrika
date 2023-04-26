@@ -72,7 +72,16 @@ public class WalletServiceImpl implements WalletService {
         return wallet;
     }
 
-    private FlwWalletRequest generatePayload(FlwWalletRequest walletRequest) {
-        return null;
+    private FlwWalletRequest generatePayload(FlwWalletRequest flwWalletRequest) {
+        FlwWalletRequest jsonData = FlwWalletRequest.builder()
+                .firstname(flwWalletRequest.getFirstname())
+                .lastname(flwWalletRequest.getLastname())
+                .email(flwWalletRequest.getEmail())
+                .bvn(flwWalletRequest.getBvn())
+                .is_permanent(true)
+                .phoneNumber(flwWalletRequest.getPhoneNumber())
+                .build();
+
+        return jsonData;
     }
 }
