@@ -10,6 +10,7 @@ import com.osiki.finteckafrika.validations.EmailValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UsersServiceImpl usersService;
     private final EmailValidator emailValidator;
     private final MailServiceImpl mailService;
+    private final ConfirmationTokenServiceImpl confirmationTokenService;
 
 
     @Override
@@ -48,6 +50,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    @Transactional
     public String confirmToken(String token) {
         return null;
     }

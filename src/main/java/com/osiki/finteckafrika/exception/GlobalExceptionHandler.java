@@ -43,4 +43,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleTokenNotFoundException(final TokenNotFoundException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Token not found");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
