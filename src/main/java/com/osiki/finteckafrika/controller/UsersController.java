@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -29,4 +26,12 @@ public class UsersController {
         return new ResponseEntity<>(registrationService.createUser(registrationRequestModel), HttpStatus.CREATED);
 
     }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirmToken(@RequestParam("token") String token){
+        return new ResponseEntity<>(registrationService.confirmToken(token), HttpStatus.OK);
+
+    }
+
+
 }

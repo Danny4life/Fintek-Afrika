@@ -7,4 +7,6 @@ public interface RegistrationService {
     String createUser(UserRegistrationRequestModel registrationRequestModel) throws JSONException;
 
     void sendMail(String name, String email, String link);
+
+    String confirmToken(String token);
 }

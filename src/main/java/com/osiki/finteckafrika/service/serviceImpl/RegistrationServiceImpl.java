@@ -46,4 +46,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         mailService.sendNotification(mailServiceModel);
 
     }
+
+    @Override
+    public String confirmToken(String token) {
+        return null;
+    }
+
 }
