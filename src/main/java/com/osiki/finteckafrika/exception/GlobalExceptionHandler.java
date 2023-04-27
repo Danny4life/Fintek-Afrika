@@ -54,4 +54,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(ConfirmationTokenException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleConfirmationTokenException(final ConfirmationTokenException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Email Already Confirmed");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }

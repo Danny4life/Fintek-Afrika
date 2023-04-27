@@ -1,10 +1,12 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.exception.EmailNotValidException;
+import com.osiki.finteckafrika.exception.TokenNotFoundException;
 import com.osiki.finteckafrika.model.MailServiceModel;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.service.RegistrationService;
+import com.osiki.finteckafrika.token.ConfirmationToken;
 import com.osiki.finteckafrika.util.Constant;
 import com.osiki.finteckafrika.validations.EmailValidator;
 import lombok.AllArgsConstructor;
@@ -40,6 +42,15 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    @Transactional
+    public String confirmToken(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token)
+                .orElseThrow(() -> new TokenNotFoundException("Token Not Found"));
+        return null;
+    }
+
+
+    @Override
     public void sendMail(String name, String email, String link) {
 
         String subject = "Email Verification";
@@ -49,10 +60,5 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     }
 
-    @Override
-    @Transactional
-    public String confirmToken(String token) {
-        return null;
-    }
 
 }
