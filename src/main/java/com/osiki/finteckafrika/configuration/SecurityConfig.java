@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    public void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception{
         http.cors()
                 .and()
                 .csrf()
@@ -47,12 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
-        return authenticationManagerBean();
+        return super.authenticationManagerBean();
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 }
