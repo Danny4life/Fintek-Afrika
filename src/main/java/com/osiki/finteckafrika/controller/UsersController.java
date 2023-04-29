@@ -1,5 +1,7 @@
 package com.osiki.finteckafrika.controller;
 
+import com.osiki.finteckafrika.model.AuthResponse;
+import com.osiki.finteckafrika.model.LoginRequestPayload;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.service.LoginService;
 import com.osiki.finteckafrika.service.RegistrationService;
@@ -24,6 +26,12 @@ public class UsersController {
     private final LoginService loginService;
 
     @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login (@RequestBody LoginRequestPayload loginRequestPayload) throws Exception{
+        String token = loginService.authenticate(loginRequestPayload);
+        AuthResponse authResponse = new AuthResponse(token);
+
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+    }
 
 
     @PostMapping("/register")

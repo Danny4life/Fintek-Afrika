@@ -1,5 +1,6 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
+import com.osiki.finteckafrika.model.LoginRequestPayload;
 import com.osiki.finteckafrika.service.LoginService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -10,4 +11,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class LoginServiceImpl implements LoginService {
+    @Override
+    public String authenticate(LoginRequestPayload loginRequestPayload) throws Exception {
+        return null;
+    }
 }
