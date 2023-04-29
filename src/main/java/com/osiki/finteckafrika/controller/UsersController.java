@@ -1,6 +1,7 @@
 package com.osiki.finteckafrika.controller;
 
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
+import com.osiki.finteckafrika.service.LoginService;
 import com.osiki.finteckafrika.service.RegistrationService;
 import com.osiki.finteckafrika.service.UsersService;
 import com.osiki.finteckafrika.service.serviceImpl.RegistrationServiceImpl;
@@ -19,6 +20,11 @@ public class UsersController {
 
     private final UsersService usersService;
     private final RegistrationServiceImpl registrationService;
+
+    private final LoginService loginService;
+
+    @PostMapping("/login")
+
 
     @PostMapping("/register")
     public ResponseEntity<String> createUserAccount(@Valid @RequestBody UserRegistrationRequestModel
