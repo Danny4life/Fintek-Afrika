@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-
 public class MailServiceImpl implements MailService {
 
 
