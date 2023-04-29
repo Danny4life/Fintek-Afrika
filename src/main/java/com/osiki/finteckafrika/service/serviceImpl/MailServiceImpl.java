@@ -5,6 +5,8 @@ import com.osiki.finteckafrika.service.MailService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+
 public class MailServiceImpl implements MailService {
+
 
 
 
