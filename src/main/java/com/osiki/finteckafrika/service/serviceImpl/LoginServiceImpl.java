@@ -1,12 +1,12 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
-import com.osiki.finteckafrika.configuration.PasswordEncoder;
 import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.model.LoginRequestPayload;
 import com.osiki.finteckafrika.model.MailServiceModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.request.ForgetPasswordRequest;
+import com.osiki.finteckafrika.request.PasswordRequest;
 import com.osiki.finteckafrika.service.LoginService;
 import com.osiki.finteckafrika.util.Constant;
 import com.osiki.finteckafrika.util.JwtUtil;
@@ -19,7 +19,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.InputMismatchException;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +67,24 @@ public class LoginServiceImpl implements LoginService {
 
 
         return "Check your email to reset your password";
+    }
+
+    @Override
+    public String resetPassword(PasswordRequest passwordRequest, String token) {
+        boolean passwordMatch = util.validatePassword(passwordRequest.getNewPassword(),
+                passwordRequest.getConfirmPassword());
+        if(!passwordMatch){
+            throw new InputMismatchException("Password does not match");
+        }
+
+        String email = jwtUtil.extractUsername(token);
+
+        Users users = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        users.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
+        usersRepository.save(users);
+
+        return "Password reset successful";
     }
 
     private void sendPasswordResetEmail(String name, String email, String link) {

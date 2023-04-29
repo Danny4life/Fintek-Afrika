@@ -4,6 +4,7 @@ import com.osiki.finteckafrika.model.AuthResponse;
 import com.osiki.finteckafrika.model.LoginRequestPayload;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
 import com.osiki.finteckafrika.request.ForgetPasswordRequest;
+import com.osiki.finteckafrika.request.PasswordRequest;
 import com.osiki.finteckafrika.response.UserResponse;
 import com.osiki.finteckafrika.service.LoginService;
 import com.osiki.finteckafrika.service.RegistrationService;
@@ -59,6 +60,14 @@ public class UsersController {
     @PostMapping("/forget-password")
     public ResponseEntity<String> forgetPassword(@RequestBody ForgetPasswordRequest forgetPasswordRequest){
         return new ResponseEntity<>(loginService.generateResetToken(forgetPasswordRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordRequest passwordRequest,
+                                                @RequestParam("token") String token){
+
+        return new ResponseEntity<>(loginService.resetPassword(passwordRequest, token), HttpStatus.OK);
+
     }
 
 
