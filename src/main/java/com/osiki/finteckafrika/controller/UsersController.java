@@ -3,6 +3,7 @@ package com.osiki.finteckafrika.controller;
 import com.osiki.finteckafrika.model.AuthResponse;
 import com.osiki.finteckafrika.model.LoginRequestPayload;
 import com.osiki.finteckafrika.model.UserRegistrationRequestModel;
+import com.osiki.finteckafrika.response.UserResponse;
 import com.osiki.finteckafrika.service.LoginService;
 import com.osiki.finteckafrika.service.RegistrationService;
 import com.osiki.finteckafrika.service.UsersService;
@@ -45,6 +46,13 @@ public class UsersController {
     public ResponseEntity<String> confirmToken(@RequestParam("token") String token){
         return new ResponseEntity<>(registrationService.confirmToken(token), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<UserResponse> getUser(){
+        UserResponse userResponse = usersService.getUser();
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
 

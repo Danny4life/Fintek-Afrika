@@ -10,6 +10,7 @@ import com.osiki.finteckafrika.repository.ConfirmationTokenRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
 import com.osiki.finteckafrika.request.FlwWalletRequest;
+import com.osiki.finteckafrika.response.UserResponse;
 import com.osiki.finteckafrika.service.UsersService;
 import com.osiki.finteckafrika.service.WalletService;
 import com.osiki.finteckafrika.token.ConfirmationToken;
@@ -19,6 +20,7 @@ import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -123,7 +125,20 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
         tokenService.saveConfirmationToken(confirmationToken);
     }
 
-    //getuser method here
+    @Override
+    public UserResponse getUser() {
+        User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users users = usersRepository.findByEmail(user1.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        return UserResponse.builder()
+                .firstName(users.getFirstName())
+                .lastName(users.getLastName())
+                .email(users.getEmail())
+                .bvn(users.getBvn())
+                .phoneNumber(users.getPhoneNumber())
+                .build();
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
