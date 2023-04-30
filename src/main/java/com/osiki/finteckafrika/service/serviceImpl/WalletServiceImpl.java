@@ -3,6 +3,7 @@ package com.osiki.finteckafrika.service.serviceImpl;
 import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.entity.Wallet;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
+import com.osiki.finteckafrika.model.AccountFundModel;
 import com.osiki.finteckafrika.model.WalletModel;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
@@ -13,10 +14,7 @@ import com.osiki.finteckafrika.util.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -72,6 +70,8 @@ public class WalletServiceImpl implements WalletService {
         return wallet;
     }
 
+
+
     private FlwWalletRequest generatePayload(FlwWalletRequest flwWalletRequest) {
         FlwWalletRequest jsonData = FlwWalletRequest.builder()
                 .firstname(flwWalletRequest.getFirstname())
@@ -83,5 +83,21 @@ public class WalletServiceImpl implements WalletService {
                 .build();
 
         return jsonData;
+    }
+
+    @Override
+    public ResponseEntity<String> fundWallet(AccountFundModel amount) {
+        if(amount.getAmount() < 0){
+            return new ResponseEntity<>("Insufficient balance", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users users = usersRepository.findUsersByEmail(user.getUsername()).get();
+        Wallet wallet = walletRepository.findWalletByUsers(users);
+        Double balance = wallet.getBalance() + amount.getAmount();
+        wallet.setBalance(balance);
+        walletRepository.save(wallet);
+
+        return new ResponseEntity<>("Account funded successfully", HttpStatus.OK);
     }
 }

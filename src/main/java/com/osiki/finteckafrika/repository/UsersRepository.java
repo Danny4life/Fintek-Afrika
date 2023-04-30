@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -15,4 +16,5 @@ public interface UsersRepository extends JpaRepository<Users, java.lang.Long> {
     Optional<Users> findByEmail(String email);
 
 
+    Optional<Users> findUsersByEmail(String email);
 }
