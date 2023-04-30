@@ -25,10 +25,10 @@ public class WalletController {
         return new ResponseEntity<>(walletModel, HttpStatus.OK);
     }
 
-    @PostMapping("/fundWallet")
+    @PostMapping("/fundLocalWallet")
 
     public ResponseEntity<String> accountFund(@RequestBody AccountFundModel amount){
-        return new ResponseEntity<>(walletService.fundWallet(amount), HttpStatus.OK);
+        return walletService.fundWallet(amount);
 
     }
 }
