@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
@@ -47,6 +48,9 @@ public class Users extends BaseClass {
 
     @OneToOne(mappedBy = "users")
     private Wallet wallet;
+
+    @OneToMany(mappedBy = "users")
+    private List<Transaction> transactions;
 
     private String role = "USER";
 }

@@ -26,4 +26,7 @@ public class Wallet extends BaseClass {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users users;
 
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Transaction> transactions;
+
 }
