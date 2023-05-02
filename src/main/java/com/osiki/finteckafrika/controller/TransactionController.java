@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TransactionController {
 
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
 
     @GetMapping("/transaction_history")
 
