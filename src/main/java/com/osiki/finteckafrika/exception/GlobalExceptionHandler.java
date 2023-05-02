@@ -76,4 +76,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(WalletNotFoundException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleWalletNotFound(final WalletNotFoundException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Invalid Account name or bank name provided!");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
