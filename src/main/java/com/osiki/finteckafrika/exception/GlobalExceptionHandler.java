@@ -87,4 +87,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleInsufficientBalanceExceptiontNotFound(final InsufficientBalanceException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Insufficient Balance");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
