@@ -98,4 +98,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+
+    @ExceptionHandler(IncorrectTransactionPinException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleIncorrectTransactionPinExceptionNotFound(final IncorrectTransactionPinException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Invalid pin!");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
 }
