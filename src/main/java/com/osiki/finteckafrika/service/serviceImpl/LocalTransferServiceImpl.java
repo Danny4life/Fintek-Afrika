@@ -86,7 +86,7 @@ public class LocalTransferServiceImpl implements LocalTransferService {
 
         sendTransaction = Transaction.builder()
                 .amount(localBankTransferModel.getAmount())
-                .destinationAccountNumber(receiverWallet.getBankName())
+                .destinationAccountName(receiverWallet.getBankName())
                 .narration(localBankTransferModel.getNarration())
                 .destinationBank(receiverWallet.getBankName())
                 .destinationAccountNumber(localBankTransferModel.getAccountNumber())
@@ -100,6 +100,25 @@ public class LocalTransferServiceImpl implements LocalTransferService {
                 .build();
 
         transactionRepository.save(sendTransaction);
+
+
+        receiverTransaction = Transaction.builder()
+                .amount(localBankTransferModel.getAmount())
+                .destinationAccountName(receiverWallet.getBankName())
+                .narration(localBankTransferModel.getNarration())
+                .destinationBank(receiverWallet.getBankName())
+                .destinationAccountNumber(localBankTransferModel.getAccountNumber())
+                .sourceAccountNumber(senderWallet.getAccountNumber())
+                .transactionType(TransactionType.CREDIT)
+                .sourceBank(senderWallet.getBankName())
+                .clientRef(uuid.toString())
+                .transactionStatus(TransactionStatus.SUCCESS)
+                .users(receiverUser)
+                .wallet(receiverWallet)
+                .build();
+
+        transactionRepository.save(receiverTransaction);
+
 
 
         return null;
