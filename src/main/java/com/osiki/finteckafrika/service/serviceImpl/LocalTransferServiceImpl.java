@@ -62,7 +62,8 @@ public class LocalTransferServiceImpl implements LocalTransferService {
         }
 
         Transaction sendTransaction = new Transaction();
-        Transaction receiverTransaction = new Transaction();
+        new Transaction();
+        Transaction receiverTransaction;
 
         try{
             double senderBalance = walletRepository.findUsersWalletById(usersRepository.findByEmail(user.getUsername()).get()
@@ -119,8 +120,6 @@ public class LocalTransferServiceImpl implements LocalTransferService {
 
         transactionRepository.save(receiverTransaction);
 
-
-
-        return null;
+        return "Transaction Successful";
     }
 }
