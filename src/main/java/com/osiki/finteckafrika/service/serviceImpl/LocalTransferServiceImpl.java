@@ -16,6 +16,7 @@ import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
 import com.osiki.finteckafrika.service.LocalTransferService;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Builder
 public class LocalTransferServiceImpl implements LocalTransferService {
 
     private final WalletRepository walletRepository;

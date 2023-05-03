@@ -16,7 +16,7 @@ public class LocalTransferController {
     private final LocalTransferServiceImpl localTransferService;
 
 
-    @PutMapping("/local-transfer")
+    @PutMapping("/localTransfer")
     public String localTransfer(@RequestBody LocalBankTransferModel localBankTransferModel){
         return localTransferService.localTransfer(localBankTransferModel);
 
