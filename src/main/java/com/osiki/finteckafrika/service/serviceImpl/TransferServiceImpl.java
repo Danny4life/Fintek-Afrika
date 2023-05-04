@@ -64,8 +64,12 @@ public class TransferServiceImpl implements TransferService {
         RestTemplate restTemplate = new RestTemplate();
 
         FlwResolveAccountDetails resolveAccountDetails = restTemplate.exchange(
+                Constant.RESOLVE_ACCOUNT_DETAILS,
+                HttpMethod.POST,
+                accountRequestHttpEntity,
+                FlwResolveAccountDetails.class
+        ).getBody();
 
-        )
-        return null;
+        return resolveAccountDetails;
     }
 }
