@@ -1,12 +1,12 @@
 package com.osiki.finteckafrika.controller;
 
 import com.osiki.finteckafrika.entity.FlwBank;
+import com.osiki.finteckafrika.response.FlwResolveAccountDetails;
 import com.osiki.finteckafrika.service.TransferService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +25,8 @@ public class OtherBankTransferController {
     }
 
     @PostMapping("/other-bank-account-query")
+
+    public ResponseEntity<FlwResolveAccountDetails> resolvedAccountDetails(@RequestBody FlwResolveAccountDetails accountDetails){
+        return new ResponseEntity<>(transferService.resolveAccount(accountDetails), HttpStatus.OK);
+    }
 }
