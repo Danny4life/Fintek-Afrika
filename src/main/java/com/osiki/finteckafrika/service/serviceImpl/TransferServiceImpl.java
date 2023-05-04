@@ -4,6 +4,7 @@ import com.osiki.finteckafrika.entity.FlwBank;
 import com.osiki.finteckafrika.repository.TransactionRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
+import com.osiki.finteckafrika.request.FlwResolveAccountRequest;
 import com.osiki.finteckafrika.response.FlwGetAllBankResponse;
 import com.osiki.finteckafrika.response.FlwResolveAccountDetails;
 import com.osiki.finteckafrika.service.TransferService;
@@ -52,7 +53,19 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public FlwResolveAccountDetails resolveAccount(FlwResolveAccountDetails accountDetails) {
+    public FlwResolveAccountDetails resolveAccount(FlwResolveAccountRequest resolveAccountRequest) {
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.add("Authorization", "Bearer" + Constant.AUTHORIZATION);
+
+        HttpEntity<FlwResolveAccountRequest> accountRequestHttpEntity = new HttpEntity<>(resolveAccountRequest, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        FlwResolveAccountDetails resolveAccountDetails = restTemplate.exchange(
+
+        )
         return null;
     }
 }

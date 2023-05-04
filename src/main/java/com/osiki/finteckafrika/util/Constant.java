@@ -9,5 +9,7 @@ public class Constant {
 
     public static final String GET_ALL_BANKS = "https://api.flutterwave.com/v3/banks/NG";
 
+    public static final String RESOLVE_ACCOUNT_DETAILS = "https://api.flutterwave.com/v3/accounts/resolve";
+
 
 }
