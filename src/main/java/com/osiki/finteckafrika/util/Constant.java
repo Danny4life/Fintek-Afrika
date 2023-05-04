@@ -7,4 +7,7 @@ public class Constant {
     public static final String AUTHORIZATION = "FLWSECK_TEST-a1d242cecd4c12c5ed7c10e9a8b9dec2-X";
     public static final String RESET_PASSWORD_LINK = "http://localhost:3333/resetPassword?token=";
 
+    public static final String GET_ALL_BANKS = "https://api.flutterwave.com/v3/banks/NG";
+
+
 }
