@@ -2,6 +2,7 @@ package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.entity.FlwBank;
 import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.exception.IncorrectDetailsException;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.repository.TransactionRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
@@ -25,8 +26,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -85,6 +88,38 @@ public class TransferServiceImpl implements TransferService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Users users = usersRepository.findByEmail(user.getUsername())
                 .orElseThrow(()-> new UserNotFoundException("User does not exist"));
+
+        if(!validatePin(bankTransferRequest.getPin(), users)){
+            throw new IncorrectDetailsException("Incorrect Pin");
+        }
+
+        if(!validateRequestBalance(bankTransferRequest.getAmount())){
+            throw new IncorrectDetailsException("Transfer must be above zero naira");
+        }
+
+        if(!validateWalletBalance(bankTransferRequest.getAmount(), users)){
+            throw new IncorrectDetailsException("Insufficient Balance");
+        }
+
+        String clientRef = UUID.randomUUID().toString();
+        
+        FlwOtherBankTransferResponse flwOtherBankTransferResponse = otherBankTransfer(bankTransferRequest, clientRef);
+
+        if(!flwOtherBankTransferResponse.getStatus().equalsIgnoreCase("success")){
+
+        }
         return null;
+    }
+
+    private FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
+    }
+
+    private boolean validateWalletBalance(BigDecimal amount, Users users) {
+    }
+
+    private boolean validateRequestBalance(BigDecimal amount) {
+    }
+
+    private boolean validatePin(String pin, Users users) {
     }
 }

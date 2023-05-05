@@ -107,7 +107,16 @@ public class GlobalExceptionHandler {
         errorResponse.setDebugMessage("Incorrect Details");
 
         return ResponseEntity.of(Optional.of(errorResponse));
+    }
 
+    @ExceptionHandler(ErrorException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleErrorExceptionNotFound(final ErrorException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("An Error Occurred");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
     }
 
 
