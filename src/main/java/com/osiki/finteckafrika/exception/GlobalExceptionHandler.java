@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
     @ResponseStatus(HttpStatus.ALREADY_REPORTED)
-    public ResponseEntity<ErrorResponse> handleInsufficientBalanceExceptiontNotFound(final InsufficientBalanceException exception){
+    public ResponseEntity<ErrorResponse> handleInsufficientBalanceExceptionNotFound(final InsufficientBalanceException exception){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(exception.getMessage());
         errorResponse.setDebugMessage("Insufficient Balance");
@@ -98,6 +98,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.of(Optional.of(errorResponse));
 
     }
+
+    @ExceptionHandler(IncorrectDetailsException.class)
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ResponseEntity<ErrorResponse> handleIncorrectDetailsExceptionNotFound(final IncorrectDetailsException exception){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(exception.getMessage());
+        errorResponse.setDebugMessage("Incorrect Details");
+
+        return ResponseEntity.of(Optional.of(errorResponse));
+
+    }
+
 
 
     @ExceptionHandler(IncorrectTransactionPinException.class)

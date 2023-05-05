@@ -1,6 +1,8 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.entity.FlwBank;
+import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.repository.TransactionRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
@@ -17,6 +19,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -77,6 +81,10 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public FlwOtherBankTransferResponse initiateOtherBankTransfer(ExternalBankTransferRequest bankTransferRequest) {
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users users = usersRepository.findByEmail(user.getUsername())
+                .orElseThrow(()-> new UserNotFoundException("User does not exist"));
         return null;
     }
 }
