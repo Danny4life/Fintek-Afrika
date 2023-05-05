@@ -1,7 +1,9 @@
 package com.osiki.finteckafrika.controller;
 
 import com.osiki.finteckafrika.entity.FlwBank;
+import com.osiki.finteckafrika.request.ExternalBankTransferRequest;
 import com.osiki.finteckafrika.request.FlwResolveAccountRequest;
+import com.osiki.finteckafrika.response.FlwOtherBankTransferResponse;
 import com.osiki.finteckafrika.response.FlwResolveAccountDetails;
 import com.osiki.finteckafrika.service.TransferService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,12 @@ public class OtherBankTransferController {
     public ResponseEntity<FlwResolveAccountDetails> resolvedAccountDetails(@RequestBody FlwResolveAccountRequest resolveAccountRequest){
 
         return new ResponseEntity<>(transferService.resolveAccount(resolveAccountRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/other-bank")
+    public ResponseEntity<FlwOtherBankTransferResponse> processTransfer(@RequestBody ExternalBankTransferRequest bankTransferRequest){
+
+        return new ResponseEntity<>(transferService.initiateOtherBankTransfer(bankTransferRequest), HttpStatus.OK);
+
     }
 }

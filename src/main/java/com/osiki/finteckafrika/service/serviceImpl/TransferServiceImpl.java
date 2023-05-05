@@ -4,8 +4,10 @@ import com.osiki.finteckafrika.entity.FlwBank;
 import com.osiki.finteckafrika.repository.TransactionRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
+import com.osiki.finteckafrika.request.ExternalBankTransferRequest;
 import com.osiki.finteckafrika.request.FlwResolveAccountRequest;
 import com.osiki.finteckafrika.response.FlwGetAllBankResponse;
+import com.osiki.finteckafrika.response.FlwOtherBankTransferResponse;
 import com.osiki.finteckafrika.response.FlwResolveAccountDetails;
 import com.osiki.finteckafrika.service.TransferService;
 import com.osiki.finteckafrika.util.Constant;
@@ -71,5 +73,10 @@ public class TransferServiceImpl implements TransferService {
         ).getBody();
 
         return resolveAccountDetails;
+    }
+
+    @Override
+    public FlwOtherBankTransferResponse initiateOtherBankTransfer(ExternalBankTransferRequest bankTransferRequest) {
+        return null;
     }
 }
