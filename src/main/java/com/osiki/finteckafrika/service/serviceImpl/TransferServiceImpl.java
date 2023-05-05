@@ -1,7 +1,9 @@
 package com.osiki.finteckafrika.service.serviceImpl;
 
 import com.osiki.finteckafrika.entity.FlwBank;
+import com.osiki.finteckafrika.entity.Transaction;
 import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.exception.ErrorException;
 import com.osiki.finteckafrika.exception.IncorrectDetailsException;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
 import com.osiki.finteckafrika.repository.TransactionRepository;
@@ -106,20 +108,30 @@ public class TransferServiceImpl implements TransferService {
         FlwOtherBankTransferResponse flwOtherBankTransferResponse = otherBankTransfer(bankTransferRequest, clientRef);
 
         if(!flwOtherBankTransferResponse.getStatus().equalsIgnoreCase("success")){
-
+            throw new ErrorException("An Error Occurred");
         }
-        return null;
+
+        Transaction transaction = saveTransaction(users, bankTransferRequest);
+        transaction.setClientRef(clientRef);
+        transaction.setFlwRef(flwOtherBankTransferResponse.getData().toString());
+        transactionRepository.save(transaction);
+
+        return flwOtherBankTransferResponse;
     }
 
-    private FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
+    public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
+
     }
 
-    private boolean validateWalletBalance(BigDecimal amount, Users users) {
+    public FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
     }
 
-    private boolean validateRequestBalance(BigDecimal amount) {
+    public boolean validateWalletBalance(BigDecimal amount, Users users) {
     }
 
-    private boolean validatePin(String pin, Users users) {
+    public boolean validateRequestBalance(BigDecimal amount) {
+    }
+
+    public boolean validatePin(String pin, Users users) {
     }
 }
