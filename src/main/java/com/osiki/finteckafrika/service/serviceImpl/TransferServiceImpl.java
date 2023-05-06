@@ -4,6 +4,7 @@ import com.osiki.finteckafrika.entity.FlwBank;
 import com.osiki.finteckafrika.entity.Transaction;
 import com.osiki.finteckafrika.entity.Users;
 import com.osiki.finteckafrika.entity.Wallet;
+import com.osiki.finteckafrika.enums.TransactionType;
 import com.osiki.finteckafrika.exception.ErrorException;
 import com.osiki.finteckafrika.exception.IncorrectDetailsException;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
@@ -179,11 +180,32 @@ public class TransferServiceImpl implements TransferService {
 
     public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
 
+        String clientReference = UUID.randomUUID().toString();
+        User user2 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users user = usersRepository.findByEmail(user2.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+
+        Wallet wallet = walletRepository.findWalletByUsers(user);
+        Double amount = bankTransferRequest.getAmount().doubleValue();
+        Double balance = wallet.getBalance() - amount;
+        wallet.setBalance(balance);
+
+        Transaction transaction = Transaction.builder()
+                .amount(bankTransferRequest.getAmount())
+                .clientRef(clientReference)
+                .flwRef(clientReference)
+                .narration(bankTransferRequest.getNarration())
+                .destinationAccountName(bankTransferRequest.getAccountNumber())
+                .destinationBank(bankTransferRequest.getBankCode())
+                .users(users)
+                .sourceAccountNumber(wallet.getAccountNumber())
+                .transactionType(TransactionType.DEBIT)
+                .wallet(wallet)
+                .build();
+
+        walletRepository.save(wallet);
+
+        return transactionRepository.save(transaction);
+
     }
-
-
-
-
-
-
 }
