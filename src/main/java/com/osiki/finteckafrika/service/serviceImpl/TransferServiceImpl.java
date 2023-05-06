@@ -3,6 +3,7 @@ package com.osiki.finteckafrika.service.serviceImpl;
 import com.osiki.finteckafrika.entity.FlwBank;
 import com.osiki.finteckafrika.entity.Transaction;
 import com.osiki.finteckafrika.entity.Users;
+import com.osiki.finteckafrika.entity.Wallet;
 import com.osiki.finteckafrika.exception.ErrorException;
 import com.osiki.finteckafrika.exception.IncorrectDetailsException;
 import com.osiki.finteckafrika.exception.UserNotFoundException;
@@ -131,6 +132,20 @@ public class TransferServiceImpl implements TransferService {
         return passwordEncoder.matches(pin, users.getTransactionPin());
     }
 
+    public boolean validateRequestBalance(BigDecimal amount) {
+        int request = amount.compareTo(BigDecimal.valueOf(0));
+
+        return request > 0;
+    }
+
+    public boolean validateWalletBalance(BigDecimal amount, Users users) {
+        Wallet wallet = walletRepository.findWalletByUsers(users);
+        int result = wallet.getBalance().compareTo(amount.doubleValue());
+
+        if(result == 0 || result == 1) return true;
+        return false;
+    }
+
     public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
 
     }
@@ -138,13 +153,12 @@ public class TransferServiceImpl implements TransferService {
 
 
     public FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
+
     }
 
-    public boolean validateWalletBalance(BigDecimal amount, Users users) {
-    }
 
-    public boolean validateRequestBalance(BigDecimal amount) {
-    }
+
+
 
 
 }
