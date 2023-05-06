@@ -27,4 +27,6 @@ public interface TransferService {
     FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef);
 
     Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest);
+
+    Users retrieveUserDetails();
 }

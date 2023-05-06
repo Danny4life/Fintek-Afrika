@@ -119,9 +119,23 @@ public class TransferServiceImpl implements TransferService {
         return flwOtherBankTransferResponse;
     }
 
+    @Override
+    public Users retrieveUserDetails() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users users = usersRepository.findByEmail(user.getUsername())
+                .orElseThrow(() -> new UserNotFoundException("User NotFound"));
+        return users;
+    }
+
+    public boolean validatePin(String pin, Users users) {
+        return passwordEncoder.matches(pin, users.getTransactionPin());
+    }
+
     public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
 
     }
+
+
 
     public FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
     }
@@ -132,6 +146,5 @@ public class TransferServiceImpl implements TransferService {
     public boolean validateRequestBalance(BigDecimal amount) {
     }
 
-    public boolean validatePin(String pin, Users users) {
-    }
+
 }
