@@ -11,6 +11,7 @@ import com.osiki.finteckafrika.repository.TransactionRepository;
 import com.osiki.finteckafrika.repository.UsersRepository;
 import com.osiki.finteckafrika.repository.WalletRepository;
 import com.osiki.finteckafrika.request.ExternalBankTransferRequest;
+import com.osiki.finteckafrika.request.FlwOtherBankTransferRequest;
 import com.osiki.finteckafrika.request.FlwResolveAccountRequest;
 import com.osiki.finteckafrika.response.FlwGetAllBankResponse;
 import com.osiki.finteckafrika.response.FlwOtherBankTransferResponse;
@@ -146,13 +147,37 @@ public class TransferServiceImpl implements TransferService {
         return false;
     }
 
-    public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
+    public FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
+        FlwOtherBankTransferRequest flwOtherBankTransferRequest = FlwOtherBankTransferRequest.builder()
+                .accountBank(bankTransferRequest.getBankCode())
+                .accountNumber(bankTransferRequest.getAccountNumber())
+                .amount(bankTransferRequest.getAmount().doubleValue())
+                .currency("NGN")
+                .narration(bankTransferRequest.getNarration())
+                .debitCurrency("NGN")
+                .callBackUrl("url")
+                .build();
 
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.add("Authorization", "Bearer" + Constant.AUTHORIZATION);
+
+        HttpEntity<FlwOtherBankTransferRequest> transferRequest = new HttpEntity<>(flwOtherBankTransferRequest, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        FlwOtherBankTransferResponse otherBankTransferResponse = restTemplate.exchange(
+                Constant.OTHER_BANK_TRANSFER,
+                HttpMethod.POST,
+                transferRequest,
+                FlwOtherBankTransferResponse.class
+        ).getBody();
+
+        return otherBankTransferResponse;
     }
 
 
-
-    public FlwOtherBankTransferResponse otherBankTransfer(ExternalBankTransferRequest bankTransferRequest, String clientRef) {
+    public Transaction saveTransaction(Users users, ExternalBankTransferRequest bankTransferRequest) {
 
     }
 
