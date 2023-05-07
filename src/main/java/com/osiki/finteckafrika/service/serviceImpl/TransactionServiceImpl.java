@@ -39,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
         Pageable pageable = PageRequest.of(transactionHistoryPages.getPageNumber(), transactionHistoryPages.getPageSize(), sort);
 
         Wallet wallet = walletRepository.findWalletByUsers(users);
-        List<Transaction> allTransactions = transactionRepository.finaAllByWallet(wallet);
+        List<Transaction> allTransactions = transactionRepository.findAllByWallet(wallet);
         String userAccountNumber = wallet.getAccountNumber();
         Page<Transaction> transactions = transactionRepository
                 .findAllBySourceAccountNumberOrDestinationAccountNumber(userAccountNumber, userAccountNumber, pageable);

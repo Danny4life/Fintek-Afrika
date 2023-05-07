@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> finaAllByWallet(Wallet wallet);
+    List<Transaction> findAllByWallet(Wallet wallet);
 
     Page<Transaction> findAllBySourceAccountNumberOrDestinationAccountNumber(String sender, String recipient, Pageable pageable);
 }
